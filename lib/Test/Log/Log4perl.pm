@@ -4,18 +4,15 @@ use warnings;
 
 use 5.8.8;
 
-use base qw(Class::Accessor::Chained);
-__PACKAGE__->mk_accessors(qw(category));
-
 use Test::Builder;
 my $Tester = Test::Builder->new();
 
-use Lingua::EN::Numbers::Ordinate;
 use Carp qw(croak);
 use Scalar::Util qw(blessed);
 use Log::Log4perl qw(:levels);
 
-our $VERSION = '0.29';
+$Log::Log4perl::Logger::INITIALIZED = 1;
+our $VERSION = '0.30';
 
 =head1 NAME
 
@@ -108,8 +105,7 @@ expected messages in the category passed.
 sub get_logger
 {
   my $class = shift;
-  my $self = bless {}, $class;
-  $self->category(shift);
+  my $self = bless { category => shift }, $class;
   return $self;
 }
 
@@ -224,7 +220,7 @@ sub _log_at_level
   my $message  = shift;
 
   push @expected, {
-    category => $self->category,
+    category => $self->{category},
     priority => $priority,
     message  => $message,
   };
@@ -285,7 +281,7 @@ sub end
     if (%wrong)
     {
       $Tester->ok(0, $name);
-      $Tester->diag(ordinate($no)." message logged wasn't what we expected:");
+      $Tester->diag("Message $no logged wasn't what we expected:");
       foreach my $thingy (qw(category priority message))
       {
         if ($wrong{ $thingy })
