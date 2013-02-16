@@ -23,4 +23,4 @@ requires:
   Test::Builder::Tester: 0
   Test::Exception: 0
   perl: 5.008008
-version: 0.31
+version: 0.32
