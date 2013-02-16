@@ -6,7 +6,7 @@ use warnings;
 use Log::Log4perl;
 # do some setup here...honest guv
 
-use Test::More tests => 9;
+use Test::More tests => 11;
 use Test::Builder::Tester;
 use Test::Log::Log4perl;
 use Test::Exception;
@@ -21,6 +21,28 @@ test_out("ok 1 - Log4perl test");
 
 Test::Log::Log4perl->start();
 $tlogger->error("my hair is on fire!");
+$logger->error("my hair is on fire!");
+Test::Log::Log4perl->end();
+
+test_test("basic ok test");
+
+########################################################
+
+test_out("ok 1 - Log4perl test");
+
+Test::Log::Log4perl->start();
+$tlogger->error("my hair is on fire!");
+$logger->error("my hair is on ", "fire!");
+Test::Log::Log4perl->end();
+
+test_test("basic ok test");
+
+########################################################
+
+test_out("ok 1 - Log4perl test");
+
+Test::Log::Log4perl->start();
+$tlogger->error("my hair is on ", "fire!");
 $logger->error("my hair is on fire!");
 Test::Log::Log4perl->end();
 
